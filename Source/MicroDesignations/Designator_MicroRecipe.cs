@@ -8,20 +8,20 @@ namespace MicroDesignations
     public class Designator_MicroRecipe : Designator
     {
         private RecipeDef recipeDef;
-        private ThingFilter ingFilter;
+        //private ThingFilter ingFilter;
+        private Bill tempBill;
         private DesignationDef designationDef = null;
         public Designator_MicroRecipe(RecipeDef recipeDef, BuildableDef thingUser)
         {
             this.recipeDef = recipeDef;
 
-            if (recipeDef.ingredients[0].IsFixedIngredient)
-                ingFilter = recipeDef.ingredients[0].filter;
-            else
-            {
-                Bill tmp = recipeDef.MakeNewBill();
-                ingFilter = tmp.ingredientFilter;
-            }
-
+            tempBill = recipeDef.MakeNewBill();
+            tempBill.ingredientFilter.SetAllowAll(recipeDef.fixedIngredientFilter);
+            //ingFilter = tmp.ingredientFilter;
+            //ingFilter.DisplayRootCategory
+            //ingFilter.SetAllowAll(recipeDef.fixedIngredientFilter);
+            //}
+        
             defaultLabel = recipeDef.label;
             defaultDesc = recipeDef.description;
             soundDragSustain = SoundDefOf.Designate_DragStandard;
@@ -102,7 +102,7 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
-            if (Map.designationManager.DesignationOn(t, Designation) != null)
+            if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
             {
                 return false;
             }
@@ -120,7 +120,7 @@ namespace MicroDesignations
             if (!b)
                 return false;
 
-            if(ingFilter.Allows(t))
+            if(recipeDef.ingredients[0].filter.Allows(t) && (tempBill.IsFixedOrAllowedIngredient(t)))
                 return true;
 
             return false;

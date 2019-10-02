@@ -1,2 +1,6 @@
-﻿1.0.0
+﻿1.0.1
+- fixed filtering issue that allowed rotting corpses to be butchered;
+- fixed filtering issue that disallowed cremation of animal corpses.
+
+1.0.0
 - happy release day!
