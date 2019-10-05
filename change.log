@@ -1,4 +1,7 @@
-﻿1.0.1
+﻿1.0.2
+- dramatically reduced, how much calculations must be done to check if designation is available for exact item, significantly reducing possible lag in games with massive amount of content adding mods;
+
+1.0.1
 - fixed filtering issue that allowed rotting corpses to be butchered;
 - fixed filtering issue that disallowed cremation of animal corpses.
 

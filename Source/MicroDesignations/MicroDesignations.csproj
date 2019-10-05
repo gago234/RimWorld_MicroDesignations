@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicableDesignationThingComp.cs" />
     <Compile Include="Bill_Patch.cs" />
     <Compile Include="Job_Patch.cs" />
     <Compile Include="MicroWorkGiverDef.cs" />

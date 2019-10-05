@@ -8,10 +8,10 @@ using RimWorld;
 
 namespace MicroDesignations
 {
-    static class StaticConstructorOnStartupUtility_Patch
+    public static class StaticConstructorOnStartupUtility_Patch
     {
         [HarmonyPatch(typeof(StaticConstructorOnStartupUtility), "CallAll")]
-        static class StaticConstructorOnStartupUtility_CallAll_PackedMeat
+        static class StaticConstructorOnStartupUtility_CallAll_MicroDesignationsPatch
         {
             static void Postfix()
             {
@@ -39,6 +39,9 @@ namespace MicroDesignations
                             };
                             DefDatabase<DesignationDef>.Add(dDef);
                         }
+
+                        foreach(var def in rec.fixedIngredientFilter.AllowedThingDefs)
+                            def.comps.Add(new CompProperties_ApplicableDesignation(dDef));
 
                         string wgname = $"{wGiverDef.defName}_{rec.defName}_DesignationWorkGiver";
                         WorkGiverDef wgDef = gList.Where(x => x.defName == wgname).FirstOrDefault();
