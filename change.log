@@ -1,4 +1,7 @@
-﻿1.0.2
+﻿1.0.3
+- improved compatibility with mods that use their own version of WorkGiver_DoBill;
+
+1.0.2
 - dramatically reduced, how much calculations must be done to check if designation is available for exact item, significantly reducing possible lag in games with massive amount of content adding mods;
 
 1.0.1

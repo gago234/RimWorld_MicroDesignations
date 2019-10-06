@@ -14,18 +14,10 @@ namespace MicroDesignations
     public class Designator_MicroRecipe : Designator
     {
         private RecipeDef recipeDef;
-        //private ThingFilter ingFilter;
-        //private Bill tempBill;
         public DesignationDef designationDef = null;
         public Designator_MicroRecipe(RecipeDef recipeDef, BuildableDef thingUser)
         {
             this.recipeDef = recipeDef;
-            //tempBill = recipeDef.MakeNewBill();
-            //tempBill.ingredientFilter.SetAllowAll(recipeDef.fixedIngredientFilter);
-            //ingFilter = tmp.ingredientFilter;
-            //ingFilter.DisplayRootCategory
-            //ingFilter.SetAllowAll(recipeDef.fixedIngredientFilter);
-            //}
         
             defaultLabel = recipeDef.label;
             defaultDesc = recipeDef.description;
@@ -40,11 +32,6 @@ namespace MicroDesignations
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
             order = 200f;
-            //Designator_Build des = null;
-            //des = BuildCopyCommandUtility.FindAllowedDesignator(thingUser, true);
-
-            //if (des == null)
-            //     return;
 
             icon = thingUser.uiIcon;
             iconAngle = thingUser.uiIconAngle;
@@ -124,50 +111,13 @@ namespace MicroDesignations
             if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
-            //bool b = false;
-
-            //foreach(var user in recipeDef.AllRecipeUsers)
-            //{
-            //    if(Map.listerBuildings.ColonistsHaveBuilding(user))
-            //    {
-            //        b = true;
-            //        break;
-            //    }
-            //}
-            //if (!b)
-            //    return false;
-
-            //if(recipeDef.ingredients[0].filter.Allows(t) && (tempBill.IsFixedOrAllowedIngredient(t)))
-            //if (recipeDef.fixedIngredientFilter.Allows(t))
-            //    return true;
-            //ThingWithComps thing = t as ThingWithComps;
-            //if (thing == null)
-            //    return false;
-
-            //Log.Message("stage0");
             if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
                 return false;
-
-            //Log.Message("stage1");
             List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
-
-            //Log.Message("stage2");
             if (l != null)
                 for (int i = 0; i < l.Count; i++)
                     if (l[i].Worker.Matches(t))
                         return false;
-            //Log.Message("stage3");
-            //if (thing.GetComps<ApplicableDesignationThingComp>().FirstOrDefault(x => x.Props.designationDef == designationDef) == null)
-
-            //{
-            //    List<ThingDef> l = StaticConstructorOnStartupUtility_Patch.thingDes[designationDef];
-            //    if (l != null && l.Contains(t.def))
-            //        return true;
-            //    else
-            //        return false;
-            //}
-
-
 
             return true;
         }

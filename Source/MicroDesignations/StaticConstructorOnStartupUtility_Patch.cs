@@ -22,14 +22,16 @@ namespace MicroDesignations
                 {
                     foreach (var rUser in rec.AllRecipeUsers.Where(y => y is BuildableDef))
                     {
-                        WorkGiverDef wGiverDef = gList.Where(x => !x.fixedBillGiverDefs.NullOrEmpty() && x.fixedBillGiverDefs.Contains(rUser) && x.giverClass == typeof(WorkGiver_DoBill)).FirstOrDefault();
+                        WorkGiverDef wGiverDef = gList.Where(x => !x.fixedBillGiverDefs.NullOrEmpty() 
+                        && x.fixedBillGiverDefs.Contains(rUser) 
+                        && (x.giverClass == typeof(WorkGiver_DoBill) || x.giverClass.IsSubclassOf(typeof(WorkGiver_DoBill)))).FirstOrDefault();
+
                         if (wGiverDef == null)
                             continue;
 
                         DesignationDef dDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == rec.defName + "Designation");
                         if (dDef == null)
                         {
-                            //Log.Message(rec.defName + "Designation");
                             dDef = new DesignationDef()
                             {
                                 defName = rec.defName + "Designation",
@@ -39,8 +41,9 @@ namespace MicroDesignations
                             };
                             DefDatabase<DesignationDef>.Add(dDef);
                         }
+                        //Log.Message($"rDef={rec},bDef={rUser},dDef={dDef}");
 
-                        foreach(var def in rec.fixedIngredientFilter.AllowedThingDefs)
+                        foreach (var def in rec.fixedIngredientFilter.AllowedThingDefs)
                             def.comps.Add(new CompProperties_ApplicableDesignation(dDef));
 
                         string wgname = $"{wGiverDef.defName}_{rec.defName}_DesignationWorkGiver";
