@@ -14,30 +14,31 @@ namespace MicroDesignations
     public class Designator_MicroRecipe : Designator
     {
         private RecipeDef recipeDef;
+        private ThingDef stuffDef = null;
+        private BuildableDef entDef;
         public DesignationDef designationDef = null;
+        private static readonly Vector2 TerrainTextureCroppedSize = new Vector2(64f, 64f);
+        private static readonly Vector2 DragPriceDrawOffset = new Vector2(19f, 17f);
+
         public Designator_MicroRecipe(RecipeDef recipeDef, BuildableDef thingUser)
         {
             this.recipeDef = recipeDef;
-        
+
             defaultLabel = recipeDef.label;
             defaultDesc = recipeDef.description;
             soundDragSustain = SoundDefOf.Designate_DragStandard;
             soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
-            useMouseIcon = true;
+            //useMouseIcon = true;
 
-            try
-            {
-                designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation");
-            }
+            try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
+            entDef = thingUser;
+            icon = entDef.uiIcon;
+            iconAngle = entDef.uiIconAngle;
+            iconOffset = entDef.uiIconOffset;
             order = 200f;
-
-            icon = thingUser.uiIcon;
-            iconAngle = thingUser.uiIconAngle;
-            iconOffset = thingUser.uiIconOffset;
-
-            ThingDef thingDef = thingUser as ThingDef;
+            ThingDef thingDef = entDef as ThingDef;
             if (thingDef == null)
             {
                 iconProportions = thingDef.graphicData.drawSize.RotatedBy(thingDef.defaultPlacingRot);
@@ -47,13 +48,46 @@ namespace MicroDesignations
                 iconProportions = new Vector2(1f, 1f);
                 iconDrawScale = 1f;
             }
+
+            TerrainDef terrainDef = entDef as TerrainDef;
+            if (terrainDef != null)
+            {
+                iconTexCoords = new Rect(0f, 0f, TerrainTextureCroppedSize.x / icon.width, TerrainTextureCroppedSize.y / icon.height);
+            }
+
+            ResetStuffToDefault();
+        }
+
+        public void ResetStuffToDefault()
+        {
+            ThingDef thingDef = entDef as ThingDef;
+            if (thingDef != null && thingDef.MadeFromStuff)
+            {
+                stuffDef = GenStuff.DefaultStuffFor(thingDef);
+            }
         }
 
         public override int DraggableDimensions
         {
             get
             {
-                return 2;
+                return this.entDef.placingDraggableDimensions;
+            }
+        }
+
+        public override bool DragDrawMeasurements
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override float PanelReadoutTitleExtraRightMargin
+        {
+            get
+            {
+                return 20f;
             }
         }
 
@@ -120,6 +154,18 @@ namespace MicroDesignations
                         return false;
 
             return true;
+        }
+
+        public override Color IconDrawColor
+        {
+            get
+            {
+                if (stuffDef != null)
+                {
+                    return stuffDef.stuffProps.color;
+                }
+                return entDef.uiIconColor;
+            }
         }
 
         public override void SelectedUpdate()

@@ -56,12 +56,15 @@ namespace MicroDesignations
                 return false;
             }
 
-            List<Building> list = new List<Building>();
-            foreach (var user in mdef.recipeDef.AllRecipeUsers)
-                if (t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
-                    x => (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills()
-                    && pawn.CanReserve(x, 1, -1, null, forced) && pawn.CanReach(x, PathEndMode.ClosestTouch, Danger.Deadly, false, TraverseMode.ByPawn)).FirstOrDefault() != null)
-                    return true;
+            if (pawn.CanReserve(t, 1, -1, null, forced))
+            {
+                List<Building> list = new List<Building>();
+                foreach (var user in mdef.recipeDef.AllRecipeUsers)
+                    if (t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
+                        x => (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills()
+                        && pawn.CanReserve(x, 1, -1, null, forced) && pawn.CanReach(x, PathEndMode.ClosestTouch, Danger.Deadly, false, TraverseMode.ByPawn)).FirstOrDefault() != null)
+                        return true;
+            }
 
             return false;
         }

@@ -24,7 +24,7 @@ namespace MicroDesignations
                     {
                         WorkGiverDef wGiverDef = gList.Where(x => !x.fixedBillGiverDefs.NullOrEmpty() 
                         && x.fixedBillGiverDefs.Contains(rUser) 
-                        && (x.giverClass == typeof(WorkGiver_DoBill) || x.giverClass.IsSubclassOf(typeof(WorkGiver_DoBill)))).FirstOrDefault();
+                        && (x.giverClass == typeof(WorkGiver_DoBill)/* || x.giverClass.IsSubclassOf(typeof(WorkGiver_DoBill))*/)).FirstOrDefault();
 
                         if (wGiverDef == null)
                             continue;
