@@ -44,7 +44,7 @@ namespace MicroDesignations
                         //Log.Message($"rDef={rec},bDef={rUser},dDef={dDef}");
 
                         foreach (var def in rec.fixedIngredientFilter.AllowedThingDefs)
-                            def.comps.Add(new CompProperties_ApplicableDesignation(dDef));
+                            def.comps.Add(new CompProperties_ApplicableDesignation() {designationDef = dDef} );
 
                         string wgname = $"{wGiverDef.defName}_{rec.defName}_DesignationWorkGiver";
                         WorkGiverDef wgDef = gList.Where(x => x.defName == wgname).FirstOrDefault();

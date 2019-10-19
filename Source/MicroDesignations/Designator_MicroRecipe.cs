@@ -28,6 +28,7 @@ namespace MicroDesignations
             defaultDesc = recipeDef.description;
             soundDragSustain = SoundDefOf.Designate_DragStandard;
             soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
+            soundSucceeded = SoundDefOf.Designate_Claim;
             //useMouseIcon = true;
 
             try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
@@ -67,29 +68,29 @@ namespace MicroDesignations
             }
         }
 
-        public override int DraggableDimensions
-        {
-            get
-            {
-                return this.entDef.placingDraggableDimensions;
-            }
-        }
+        //public override int DraggableDimensions
+        //{
+        //    get
+        //    {
+        //        return 2;
+        //    }
+        //}
 
-        public override bool DragDrawMeasurements
-        {
-            get
-            {
-                return true;
-            }
-        }
+        //public override bool DragDrawMeasurements
+        //{
+        //    get
+        //    {
+        //        return true;
+        //    }
+        //}
 
-        public override float PanelReadoutTitleExtraRightMargin
-        {
-            get
-            {
-                return 20f;
-            }
-        }
+        //public override float PanelReadoutTitleExtraRightMargin
+        //{
+        //    get
+        //    {
+        //        return 20f;
+        //    }
+        //}
 
         protected override DesignationDef Designation
         {

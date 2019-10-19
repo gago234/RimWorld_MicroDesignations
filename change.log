@@ -1,4 +1,7 @@
-﻿1.0.4
+﻿1.0.5
+- fixed an issue that caused an error when MicroDesignations, Hospitality and Medical Supplements are used together;
+
+1.0.4
 - added extra reservation check to avoid "no job" error;
 
 1.0.2
