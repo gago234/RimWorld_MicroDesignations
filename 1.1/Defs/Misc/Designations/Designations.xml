@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<DesignationDef>
+		<defName>ButcherCorpseFleshDesignation</defName>
+		<texturePath>Designations/Slaughter</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>ButcherCorpseMechanoidDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>CremateCorpseDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>BurnApparelDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksAnyDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>ExtractMetalFromSlagDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>SmeltWeaponDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>DestroyWeaponDesignation</defName>
+		<texturePath>Designations/Deconstruct</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksSandstoneDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksGraniteDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksLimestoneDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksSlateDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
+	<DesignationDef>
+		<defName>Make_StoneBlocksMarbleDesignation</defName>
+		<texturePath>Designations/Mine</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+</Defs>
