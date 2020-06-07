@@ -9,6 +9,7 @@
 				<MicroDesignations.RecipeJobDef>
 					<workerClass>MendAndRecycle.RecipeWorkerWithJob_Mend</workerClass>
 					<jobName>Mend</jobName>
+					<defName>RecipeJobMend</defName>
 				</MicroDesignations.RecipeJobDef>
 			</value>
 		</match>
@@ -23,6 +24,7 @@
 				<MicroDesignations.RecipeJobDef>
 					<workerClass>MendAndRecycle.RecipeWorkerWithJob_Recycle</workerClass>
 					<jobName>Recycle</jobName>
+					<defName>RecipeJobRecycle</defName>
 				</MicroDesignations.RecipeJobDef>
 			</value>
 		</match>

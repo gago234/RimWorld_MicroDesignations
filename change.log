@@ -1,4 +1,11 @@
-﻿1.0.7
+﻿1.0.9
+- officially added Harmony dependency.
+
+1.0.8
+- accidentally fixed mechanics that I was making for Mend & Recycle, and other mods with that kind of special jobs, but didn't finish. So it works now, I guess?
+- fixed a problem, due to which designation wouldn't be removed after job is done;
+
+1.0.7
 - updated for RW 1.1;
 
 1.0.6
