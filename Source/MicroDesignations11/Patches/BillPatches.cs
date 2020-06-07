@@ -15,6 +15,7 @@ namespace MicroDesignations
                     __result = __instance.deleted;
                     return false;
                 }
+
                 return true;
             }
         }

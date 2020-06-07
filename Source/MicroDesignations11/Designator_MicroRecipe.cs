@@ -7,11 +7,9 @@ using UnityEngine;
 
 namespace MicroDesignations
 {
-    public class Designator_MicroRecipe : Designator
+    public class Designator_MicroRecipe : Action_Designator
     {
         private RecipeDef recipeDef;
-        private ThingDef stuffDef = null;
-        private BuildableDef entDef;
         public DesignationDef designationDef = null;
         private static readonly Vector2 TerrainTextureCroppedSize = new Vector2(64f, 64f);
         private static readonly Vector2 DragPriceDrawOffset = new Vector2(19f, 17f);
@@ -25,43 +23,29 @@ namespace MicroDesignations
             soundDragSustain = SoundDefOf.Designate_DragStandard;
             soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
             soundSucceeded = SoundDefOf.Designate_Claim;
-            //useMouseIcon = true;
 
             try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
-            entDef = thingUser;
-            icon = entDef.uiIcon;
-            iconAngle = entDef.uiIconAngle;
-            iconOffset = entDef.uiIconOffset;
             order = 200f;
-            ThingDef thingDef = entDef as ThingDef;
-            if (thingDef == null)
-            {
-                iconProportions = thingDef.graphicData.drawSize.RotatedBy(thingDef.defaultPlacingRot);
-                iconDrawScale = GenUI.IconDrawScale(thingDef);
-            } else
-            {
-                iconProportions = new Vector2(1f, 1f);
-                iconDrawScale = 1f;
-            }
-
-            TerrainDef terrainDef = entDef as TerrainDef;
-            if (terrainDef != null)
-            {
-                iconTexCoords = new Rect(0f, 0f, TerrainTextureCroppedSize.x / icon.width, TerrainTextureCroppedSize.y / icon.height);
-            }
-
-            ResetStuffToDefault();
+            icon = ContentFinder<Texture2D>.Get("UI/Empty", true);
         }
 
-        public void ResetStuffToDefault()
+        public override Command_Action init_Command_Action()
         {
-            ThingDef thingDef = entDef as ThingDef;
-            if (thingDef != null && thingDef.MadeFromStuff)
+            BuildableDef b;
+            ThingDef t;
+            FindBuilding(out b, out t);
+            
+            if (b == null)
             {
-                stuffDef = GenStuff.DefaultStuffFor(thingDef);
+                return base.init_Command_Action();
             }
+
+            BuildableCommand_Action action = new BuildableCommand_Action();
+            action.buildableDef = b;
+            action.thingDef = t;
+            return action;
         }
 
         protected override DesignationDef Designation
@@ -129,16 +113,21 @@ namespace MicroDesignations
             return true;
         }
 
-        public override Color IconDrawColor
+        public void FindBuilding(out BuildableDef buildableDef, out ThingDef stuffDef)
         {
-            get
+            foreach (var user in recipeDef.AllRecipeUsers)
             {
-                if (stuffDef != null)
+                IEnumerable<Building> l = Map.listerBuildings.AllBuildingsColonistOfDef(user);
+                if (l.Count() > 0)
                 {
-                    return stuffDef.stuffProps.color;
+                    buildableDef = user;
+                    stuffDef = l.FirstOrDefault().Stuff;
+                    return;
                 }
-                return entDef.uiIconColor;
             }
+
+            buildableDef = null;
+            stuffDef = null;
         }
 
         public override void SelectedUpdate()

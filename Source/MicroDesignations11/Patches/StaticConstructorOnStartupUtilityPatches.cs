@@ -99,7 +99,7 @@ namespace MicroDesignations
                                 workType = wGiverDef.workType,
                                 priorityInType = wGiverDef.priorityInType - 5,
                                 verb = wGiverDef.verb,
-                                gerund = wGiverDef.verb,//wGiverDef.gerund,
+                                gerund = wGiverDef.verb,
                                 requiredCapacities = new List<PawnCapacityDef>(wGiverDef.requiredCapacities),
                                 prioritizeSustains = wGiverDef.prioritizeSustains
                             };
