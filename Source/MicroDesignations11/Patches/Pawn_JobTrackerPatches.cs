@@ -17,7 +17,6 @@ namespace MicroDesignations
         {
             static void UnmarkDesignation(Pawn_JobTracker __instance, JobCondition condition, bool releaseReservations, bool cancelBusyStancesSoft, bool canReturnToPool)
             {
-                Log.Message($"{__instance}, {condition}");
                 if (__instance == null || __instance.curJob == null || __instance.curJob.bill == null || __instance.curJob.bill == null ||
                     __instance.curJob.bill.billStack != null || condition != JobCondition.Succeeded)
                     return;
