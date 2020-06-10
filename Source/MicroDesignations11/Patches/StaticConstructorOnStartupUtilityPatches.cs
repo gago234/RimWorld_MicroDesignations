@@ -15,6 +15,7 @@ namespace MicroDesignations
             {
                 List<RecipeDef> list = DefDatabase<RecipeDef>.AllDefsListForReading;
                 List<WorkGiverDef> gList = DefDatabase<WorkGiverDef>.AllDefsListForReading;
+                UnityEngine.Material mat = DesignationDefOf.Uninstall.iconMat;
 
                 foreach (var rec in list.Where(x => x.AllRecipeUsers != null
                     && x.AllRecipeUsers.FirstOrDefault(y => y is BuildableDef) != null
@@ -45,7 +46,7 @@ namespace MicroDesignations
                             {
                                 defName = rec.defName + "Designation",
                                 texturePath = "Designations/Uninstall",
-                                iconMat = MaterialPool.MatFrom("Designations/Uninstall", ShaderDatabase.MetaOverlay),
+                                iconMat = mat,//MaterialPool.MatFrom("Designations/Uninstall", ShaderDatabase.MetaOverlay),
                                 targetType = TargetType.Thing
                             };
                             DefDatabase<DesignationDef>.Add(dDef);

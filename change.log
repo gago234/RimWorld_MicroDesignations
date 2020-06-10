@@ -1,4 +1,7 @@
-﻿1.0.10
+﻿1.0.11
+- together with Samboy figured out an issue behind incompatibility with BetterLoading. Should be working now.
+
+1.0.10
 - updated how icons are drawn. Now buttons don't get disfigured by wrong scaling, icons get a picture of currently existing building on the map (or no icon if there is no building). I wish I could do something about designation markers;
 - fixed designations getting removed the same moment a pawn decides to do anything with a designated item. Bug was added with Rimword 1.1 update;
 
