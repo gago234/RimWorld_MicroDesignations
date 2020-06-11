@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<!-- settings -->
+	<hide_unresearched>Hide designations for unresearched recipes</hide_unresearched>
+	<hide_empty>Hide designations if there is no building on the map for them</hide_empty>
+	<hide_inactive>Hide designations if buildings for them aren't researched (unless there is one on the map)</hide_inactive>
+</LanguageData>

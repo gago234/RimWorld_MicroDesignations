@@ -69,6 +69,7 @@
     <Compile Include="MicroDesignations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\StaticConstructorOnStartupUtilityPatches.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="WorkGiver_MicroRecipe.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

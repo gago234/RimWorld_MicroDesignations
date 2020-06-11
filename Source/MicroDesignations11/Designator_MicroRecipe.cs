@@ -99,12 +99,26 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
+            if (Settings.hide_unresearched && !recipeDef.AvailableNow)
+                return false;
+
+            if (Settings.hide_empty || Settings.hide_inactive)
+            {
+                BuildableDef buildable;
+                ThingDef thing;
+                bool b = FindBuilding(out buildable, out thing);
+                if (Settings.hide_empty && buildable == null || Settings.hide_inactive && !b)
+                    return false;
+            }
+
             if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
             if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
                 return false;
+
             List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
+
             if (l != null)
                 for (int i = 0; i < l.Count; i++)
                     if (l[i].Worker.Matches(t))
@@ -113,21 +127,24 @@ namespace MicroDesignations
             return true;
         }
 
-        public void FindBuilding(out BuildableDef buildableDef, out ThingDef stuffDef)
+        public bool FindBuilding(out BuildableDef buildableDef, out ThingDef stuffDef)
         {
+            bool b = false;
             foreach (var user in recipeDef.AllRecipeUsers)
             {
+                b = b || user.IsResearchFinished;
                 IEnumerable<Building> l = Map.listerBuildings.AllBuildingsColonistOfDef(user);
                 if (l.Count() > 0)
                 {
                     buildableDef = user;
                     stuffDef = l.FirstOrDefault().Stuff;
-                    return;
+                    return true;
                 }
             }
 
             buildableDef = null;
             stuffDef = null;
+            return b;
         }
 
         public override void SelectedUpdate()

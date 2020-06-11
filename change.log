@@ -1,4 +1,7 @@
-﻿1.0.11
+﻿1.0.12
+- added options to hide designations when they're not usable;
+
+1.0.11
 - together with Samboy figured out an issue behind incompatibility with BetterLoading. Should be working now.
 
 1.0.10
