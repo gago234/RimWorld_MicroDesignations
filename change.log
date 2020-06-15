@@ -1,4 +1,7 @@
-﻿1.0.12
+﻿1.0.13
+- made changes that should remove slowdown when selecting a lot of items at the same time. Not effective if you select a lot of items of different types though. That's a sacrifice that must be done, I guess;
+
+1.0.12
 - added options to hide designations when they're not usable;
 
 1.0.11

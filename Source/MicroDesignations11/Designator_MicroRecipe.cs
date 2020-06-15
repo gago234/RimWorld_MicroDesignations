@@ -13,6 +13,12 @@ namespace MicroDesignations
         public DesignationDef designationDef = null;
         private static readonly Vector2 TerrainTextureCroppedSize = new Vector2(64f, 64f);
         private static readonly Vector2 DragPriceDrawOffset = new Vector2(19f, 17f);
+        private Thing cachedThing = null;
+        private bool cachedResult = false;
+        private bool reloadBuildable = false;
+        private BuildableDef cachedBuildable = null;
+        private ThingDef cachedStuff = null;
+        private bool cachedResearched = false;
 
         public Designator_MicroRecipe(RecipeDef recipeDef, BuildableDef thingUser)
         {
@@ -33,18 +39,18 @@ namespace MicroDesignations
 
         public override Command_Action init_Command_Action()
         {
-            BuildableDef b;
-            ThingDef t;
-            FindBuilding(out b, out t);
+            //BuildableDef b;
+            //ThingDef t;
+            FindBuilding();
             
-            if (b == null)
+            if (cachedBuildable == null)
             {
                 return base.init_Command_Action();
             }
 
             BuildableCommand_Action action = new BuildableCommand_Action();
-            action.buildableDef = b;
-            action.thingDef = t;
+            action.buildableDef = cachedBuildable;
+            action.thingDef = cachedStuff;
             return action;
         }
 
@@ -99,36 +105,47 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
+            if (cachedThing != null && cachedThing.def == t.def)
+                return cachedResult;
+
+            cachedThing = t;
+            reloadBuildable = true;
+
             if (Settings.hide_unresearched && !recipeDef.AvailableNow)
-                return false;
+                return cachedResult = false;
 
             if (Settings.hide_empty || Settings.hide_inactive)
             {
-                BuildableDef buildable;
-                ThingDef thing;
-                bool b = FindBuilding(out buildable, out thing);
-                if (Settings.hide_empty && buildable == null || Settings.hide_inactive && !b)
-                    return false;
+                //BuildableDef buildable;
+                //ThingDef thing;
+                FindBuilding();
+                if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
+                    return cachedResult = false;
             }
 
             if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
-                return false;
+                return cachedResult = false;
 
             if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
-                return false;
+            {
+                return cachedResult = false;
+            }
 
             List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
 
             if (l != null)
                 for (int i = 0; i < l.Count; i++)
                     if (l[i].Worker.Matches(t))
-                        return false;
+                        return cachedResult = false;
 
-            return true;
+            return cachedResult = true;
         }
 
-        public bool FindBuilding(out BuildableDef buildableDef, out ThingDef stuffDef)
+        public void FindBuilding()
         {
+            if (!reloadBuildable)
+                return;
+
             bool b = false;
             foreach (var user in recipeDef.AllRecipeUsers)
             {
@@ -136,20 +153,17 @@ namespace MicroDesignations
                 IEnumerable<Building> l = Map.listerBuildings.AllBuildingsColonistOfDef(user);
                 if (l.Count() > 0)
                 {
-                    buildableDef = user;
-                    stuffDef = l.FirstOrDefault().Stuff;
-                    return true;
+                    cachedBuildable = user;
+                    cachedStuff = l.FirstOrDefault().Stuff;
+                    cachedResearched = true;
+                    return;
                 }
             }
 
-            buildableDef = null;
-            stuffDef = null;
-            return b;
-        }
-
-        public override void SelectedUpdate()
-        {
-            GenUI.RenderMouseoverBracket();
+            cachedBuildable = null;
+            cachedStuff = null;
+            cachedResearched = b;
+            return;
         }
     }
 }
