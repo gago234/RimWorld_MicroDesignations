@@ -1,2 +1,2 @@
 # RimWorld_MicroDesignations
-RIMWORLD MOD - Micro Designations is a MOD for a videogame RIMWORLD.
+https://steamcommunity.com/sharedfiles/filedetails/?id=1877972690
