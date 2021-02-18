@@ -30,10 +30,10 @@ namespace MicroDesignations
                 List<Designator> desList = (List<Designator>)LdesList.GetValue(__instance);
                 List<RecipeDef> list = DefDatabase<RecipeDef>.AllDefsListForReading;
 
-                foreach (var rec in list.Where(x => x.AllRecipeUsers?.OfType<BuildableDef>().Any() == true && x.ingredients?.Count() == 1 && x.ingredients[0].filter?.AnyAllowedDef?.stackLimit < 2))
+                foreach (var rec in list.Where(x => x.AllRecipeUsers?.OfType<BuildableDef>().Any() == true && x.ingredients?.Count() == 1 && x.ingredients[0]?.filter?.AnyAllowedDef?.stackLimit < 2))
                 {
                     Designator_MicroRecipe derp = new Designator_MicroRecipe(rec, rec.AllRecipeUsers.FirstOrDefault(y => y is BuildableDef));
-                    if(derp.designationDef != null)
+                    if (derp.designationDef != null)
                         desList.Add(derp);
                 }
             }
