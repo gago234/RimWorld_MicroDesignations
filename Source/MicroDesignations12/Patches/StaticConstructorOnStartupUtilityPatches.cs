@@ -46,7 +46,7 @@ namespace MicroDesignations
                             {
                                 defName = rec.defName + "Designation",
                                 texturePath = "Designations/Uninstall",
-                                iconMat = mat,//MaterialPool.MatFrom("Designations/Uninstall", ShaderDatabase.MetaOverlay),
+                                iconMat = mat,
                                 targetType = TargetType.Thing
                             };
                             DefDatabase<DesignationDef>.Add(dDef);
