@@ -105,6 +105,10 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
+
+            if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
+                return false;
+
             if (cachedThing != null && cachedThing.def == t.def)
                 return cachedResult;
 
@@ -116,15 +120,13 @@ namespace MicroDesignations
 
             if (Settings.hide_empty || Settings.hide_inactive)
             {
-                //BuildableDef buildable;
-                //ThingDef thing;
                 FindBuilding();
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
             }
 
-            if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
-                return cachedResult = false;
+            //if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
+            //    return cachedResult = false;
 
             if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
             {

@@ -1,5 +1,9 @@
-﻿1.0.15
-- little compatibility fix suggested by jptrrs (for Human Resources mod);
+﻿1.0.16
+- fixed designation button still displayed after pressing it, therefore fixed an error caused by  multiple designation of the same item;
+- added a workaround for BetterLoading;
+
+1.0.15
+- little compatibility improvement suggested by jptrrs (for Human Resources mod);
 
 1.0.14
 - updated for 1.2;
