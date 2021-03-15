@@ -26,7 +26,7 @@
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksAnyDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 	
@@ -50,32 +50,32 @@
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksSandstoneDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 	
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksGraniteDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksLimestoneDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksSlateDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 	
 	<DesignationDef>
 		<defName>Make_StoneBlocksMarbleDesignation</defName>
-		<texturePath>Designations/Mine</texturePath>
+		<texturePath>Designations/Deconstruct</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
 </Defs>
