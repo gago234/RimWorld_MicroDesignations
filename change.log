@@ -1,4 +1,9 @@
-﻿1.0.17
+﻿1.0.18
+- made new icons for all vanilla designations;
+- added hotkeys for almost all vanilla designations;
+- now when you designate an item, all other designations are removed from it;
+
+1.0.17
 - changed chunk icons from mining to deconstruction. Someday I'll make proper ones. I want to believe;
 
 1.0.16

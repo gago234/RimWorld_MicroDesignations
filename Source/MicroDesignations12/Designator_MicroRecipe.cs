@@ -33,14 +33,15 @@ namespace MicroDesignations
             try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
+            if (designationDef.HasModExtension<DesignatorHotKey>())
+                this.hotKey = designationDef.GetModExtension<DesignatorHotKey>().hotKey;
+
             order = 200f;
             icon = ContentFinder<Texture2D>.Get("UI/Empty", true);
         }
 
         public override Command_Action init_Command_Action()
         {
-            //BuildableDef b;
-            //ThingDef t;
             FindBuilding();
             
             if (cachedBuildable == null)
@@ -100,6 +101,7 @@ namespace MicroDesignations
 
         public override void DesignateThing(Thing t)
         {
+            Map.designationManager.RemoveAllDesignationsOn(t);
             Map.designationManager.AddDesignation(new Designation(t, Designation));
         }
 
@@ -124,9 +126,6 @@ namespace MicroDesignations
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
             }
-
-            //if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
-            //    return cachedResult = false;
 
             if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
             {
