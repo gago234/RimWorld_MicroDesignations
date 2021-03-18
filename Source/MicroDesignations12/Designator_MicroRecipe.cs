@@ -33,7 +33,7 @@ namespace MicroDesignations
             try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
-            if (designationDef.HasModExtension<DesignatorHotKey>())
+            if (designationDef != null && designationDef.HasModExtension<DesignatorHotKey>())
                 this.hotKey = designationDef.GetModExtension<DesignatorHotKey>().hotKey;
 
             order = 200f;

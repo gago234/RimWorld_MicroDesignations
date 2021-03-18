@@ -1,4 +1,11 @@
-﻿1.0.18
+﻿1.0.19
+- made a fix that should solve an issue that probably caused some compatibility issues;
+
+1.0.18+
+- added SmeltApparel to the list of vanilla actions;
+- changed hotkey for "Burn" action to match "Destroy" to make them interchangeable;
+
+1.0.18
 - made new icons for all vanilla designations;
 - added hotkeys for almost all vanilla designations;
 - now when you designate an item, all other designations are removed from it;

@@ -28,7 +28,7 @@
 		<targetType>Thing</targetType>
 		<modExtensions>
 			<li Class="MicroDesignations.DesignatorHotKey">
-				<hotKey>Designator_Deconstruct</hotKey>
+				<hotKey>Command_TogglePower</hotKey>
 			</li>
 		</modExtensions>
 	</DesignationDef>
@@ -39,7 +39,7 @@
 		<targetType>Thing</targetType>
 		<modExtensions>
 			<li Class="MicroDesignations.DesignatorHotKey">
-				<hotKey>Designator_Deconstruct</hotKey>
+				<hotKey>Command_TogglePower</hotKey>
 			</li>
 		</modExtensions>
 	</DesignationDef>
@@ -50,7 +50,7 @@
 		<targetType>Thing</targetType>
 		<modExtensions>
 			<li Class="MicroDesignations.DesignatorHotKey">
-				<hotKey>Designator_Deconstruct</hotKey>
+				<hotKey>Command_TogglePower</hotKey>
 			</li>
 		</modExtensions>
 	</DesignationDef>
@@ -79,6 +79,17 @@
 	
 	<DesignationDef>
 		<defName>SmeltWeaponDesignation</defName>
+		<texturePath>Designations/Recycle</texturePath>
+		<targetType>Thing</targetType>
+		<modExtensions>
+			<li Class="MicroDesignations.DesignatorHotKey">
+				<hotKey>Designator_Deconstruct</hotKey>
+			</li>
+		</modExtensions>
+	</DesignationDef>
+
+	<DesignationDef>
+		<defName>SmeltApparelDesignation</defName>
 		<texturePath>Designations/Recycle</texturePath>
 		<targetType>Thing</targetType>
 		<modExtensions>
