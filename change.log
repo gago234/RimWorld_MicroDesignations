@@ -1,4 +1,9 @@
-﻿1.0.19
+﻿1.0.20
+- added new "default" designation icon;
+- fixed a bug due to which designation buttons wouldn't update if you pick same items, but of different mat;
+- made it possible for a mod to utilize WorkTab mod priorities.
+
+1.0.19
 - made a fix that should solve an issue that probably caused some compatibility issues;
 
 1.0.18+

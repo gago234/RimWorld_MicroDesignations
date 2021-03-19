@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+
 	<DesignationDef>
 		<defName>ButcherCorpseFleshDesignation</defName>
 		<texturePath>Designations/Slaughter</texturePath>
@@ -151,4 +152,13 @@
 		<texturePath>Designations/Chisel</texturePath>
 		<targetType>Thing</targetType>
 	</DesignationDef>
+	
+	<!-- Mend & Recycle mod -->
+	
+	<DesignationDef>
+		<defName>RecycleApparelDesignation</defName>
+		<texturePath>Designations/Recycle</texturePath>
+		<targetType>Thing</targetType>
+	</DesignationDef>
+	
 </Defs>

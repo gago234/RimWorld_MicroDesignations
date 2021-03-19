@@ -63,10 +63,11 @@ namespace MicroDesignations
                             dDef = new DesignationDef()
                             {
                                 defName = rec.defName + "Designation",
-                                texturePath = "Designations/Uninstall",
-                                iconMat = mat,
+                                iconMat = MaterialPool.MatFrom("Designations/General", ShaderDatabase.MetaOverlay),
                                 targetType = TargetType.Thing
+                                
                             };
+
                             DefDatabase<DesignationDef>.Add(dDef);
                         }
 
@@ -109,6 +110,7 @@ namespace MicroDesignations
                             }
                             wgDef = new MicroWorkGiverDef()
                             {
+                                workGiverDef = wGiverDef,
                                 recipeDef = rec,
                                 designationDef = dDef,
                                 defName = wgname,

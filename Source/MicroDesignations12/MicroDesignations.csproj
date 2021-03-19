@@ -52,6 +52,7 @@
     <Compile Include="Patches\Pawn_JobTrackerPatches.cs" />
     <Compile Include="Patches\JobPatches.cs" />
     <Compile Include="MicroWorkGiverDef.cs" />
+    <Compile Include="Patches\WorkTabPatches.cs" />
     <Compile Include="RecipeJobDef.cs" />
     <Compile Include="Patches\ReverseDesignatorDatabasePatches.cs" />
     <Compile Include="Designator_MicroRecipe.cs" />

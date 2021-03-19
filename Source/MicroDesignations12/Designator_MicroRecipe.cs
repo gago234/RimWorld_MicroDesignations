@@ -33,6 +33,8 @@ namespace MicroDesignations
             try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
             catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
 
+            if (designationDef == null) Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})");
+
             if (designationDef != null && designationDef.HasModExtension<DesignatorHotKey>())
                 this.hotKey = designationDef.GetModExtension<DesignatorHotKey>().hotKey;
 
@@ -111,7 +113,7 @@ namespace MicroDesignations
             if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
-            if (cachedThing != null && cachedThing.def == t.def)
+            if (cachedThing != null && cachedThing.def == t.def && cachedThing.Stuff == t.Stuff)
                 return cachedResult;
 
             cachedThing = t;
