@@ -1,4 +1,7 @@
-﻿1.0.20
+﻿1.0.21
+- did some work reducing lag for heavy moded games. Not much, but it's something;
+
+1.0.20
 - added new "default" designation icon;
 - fixed a bug due to which designation buttons wouldn't update if you pick same items, but of different mat;
 - made it possible for a mod to utilize WorkTab mod priorities.
