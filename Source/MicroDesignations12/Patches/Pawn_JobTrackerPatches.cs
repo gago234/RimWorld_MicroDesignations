@@ -11,7 +11,6 @@ namespace MicroDesignations
 {
     class Pawn_JobTracker_EndCurrentJob
     {
-        //public void EndCurrentJob(JobCondition condition, bool startNewJob = true)
         [HarmonyPatch(typeof(Pawn_JobTracker), "EndCurrentJob")]
         static class Pawn_JobTracker_EndCurrentJob_MicroDesignationsPatch
         {

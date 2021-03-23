@@ -35,19 +35,15 @@ namespace MicroDesignations
                 List<WorkGiverDef> gList = DefDatabase<WorkGiverDef>.AllDefsListForReading;
                 UnityEngine.Material mat = DesignationDefOf.Uninstall.iconMat;
 
-                foreach (var rec in list.Where(x => x.AllRecipeUsers != null
-                    && x.AllRecipeUsers.FirstOrDefault(y => y is BuildableDef) != null
-                    && !x.ingredients.NullOrEmpty() && x.ingredients.Count() == 1
-                    && x.ingredients[0].filter != null
-                    && x.ingredients[0].filter.AnyAllowedDef != null
-                    && x.ingredients[0].filter.AnyAllowedDef.stackLimit < 2
-                    && x.fixedIngredientFilter != null
-                    && x.fixedIngredientFilter.AllowedThingDefs != null))
+                foreach (var rec in list.Where(x => x.AllRecipeUsers?.OfType<BuildableDef>().Any() == true
+                    && x.ingredients?.Count() == 1
+                    && x.ingredients[0]?.filter?.AnyAllowedDef?.stackLimit < 2
+                    && x.fixedIngredientFilter?.AllowedThingDefs != null))
                 {
                     foreach (var rUser in rec.AllRecipeUsers.Where(y => y is BuildableDef))
                     {
-                        IEnumerable<WorkGiverDef> gListSel = gList.Where(x => !x.fixedBillGiverDefs.NullOrEmpty()
-                           && x.fixedBillGiverDefs.Contains(rUser) && (x.giverClass == typeof(WorkGiver_DoBill) || x.giverClass.IsSubclassOf(typeof(WorkGiver_DoBill))));
+                        IEnumerable<WorkGiverDef> gListSel = gList.Where(x => x.fixedBillGiverDefs?.Contains(rUser) == true
+                            && (x.giverClass == typeof(WorkGiver_DoBill) || x.giverClass.IsSubclassOf(typeof(WorkGiver_DoBill))));
 
                         if (gListSel == null)
                             continue;

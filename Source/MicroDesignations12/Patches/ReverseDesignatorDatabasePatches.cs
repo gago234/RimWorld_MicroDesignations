@@ -30,9 +30,9 @@ namespace MicroDesignations
 
             foreach (var rec in list.Where(x => x.AllRecipeUsers?.OfType<BuildableDef>().Any() == true && x.ingredients?.Count() == 1 && x.ingredients[0]?.filter?.AnyAllowedDef?.stackLimit < 2))
             {
-                Designator_MicroRecipe derp = new Designator_MicroRecipe(rec, rec.AllRecipeUsers.FirstOrDefault(y => y is BuildableDef));
-                if (derp.designationDef != null)
-                    desList.Add(derp);
+                Designator_MicroRecipe designator = new Designator_MicroRecipe(rec, rec.AllRecipeUsers.FirstOrDefault(y => y is BuildableDef));
+                if (designator.designationDef != null)
+                    desList.Add(designator);
             }
         }
     }

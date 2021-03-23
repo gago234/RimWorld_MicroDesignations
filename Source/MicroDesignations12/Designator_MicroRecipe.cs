@@ -30,12 +30,9 @@ namespace MicroDesignations
             soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
             soundSucceeded = SoundDefOf.Designate_Claim;
 
-            try { designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation"); }
-            catch { Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})"); }
+            designationDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == recipeDef.defName + "Designation");
 
-            if (designationDef == null) Log.Message($"weird thing happened, couldn't load DesignationDef for Designator({this})");
-
-            if (designationDef != null && designationDef.HasModExtension<DesignatorHotKey>())
+            if (designationDef?.HasModExtension<DesignatorHotKey>() == true)
                 this.hotKey = designationDef.GetModExtension<DesignatorHotKey>().hotKey;
 
             order = 200f;
@@ -109,8 +106,9 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
-
-            if (!t.Spawned || Map.designationManager.DesignationOn(t, Designation) != null)
+            if (!t.Spawned 
+                || t.def.GetCompProperties<CompProperties_ApplicableDesignation>()?.designationDef != designationDef
+                || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
             if (cachedThing != null && cachedThing.def == t.def && cachedThing.Stuff == t.Stuff)
@@ -127,11 +125,6 @@ namespace MicroDesignations
                 FindBuilding();
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
-            }
-
-            if (t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null)
-            {
-                return cachedResult = false;
             }
 
             List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
