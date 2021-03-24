@@ -14,6 +14,7 @@ namespace MicroDesignations
         private static readonly Vector2 TerrainTextureCroppedSize = new Vector2(64f, 64f);
         private static readonly Vector2 DragPriceDrawOffset = new Vector2(19f, 17f);
         private Thing cachedThing = null;
+        private bool cachedAllowed = false;
         private bool cachedResult = false;
         private bool reloadBuildable = false;
         private BuildableDef cachedBuildable = null;
@@ -104,21 +105,38 @@ namespace MicroDesignations
             Map.designationManager.AddDesignation(new Designation(t, Designation));
         }
 
+        bool allowed(Thing thing)
+        {
+            List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
+
+            if (l != null)
+                for (int i = 0; i < l.Count; i++)
+                    if (l[i].Worker.Matches(thing))
+                        return false;
+            return true;
+        }
+
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
             if (!t.Spawned 
-                || t.def.GetCompProperties<CompProperties_ApplicableDesignation>()?.designationDef != designationDef
+                || t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null
                 || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
-            if (cachedThing != null && cachedThing.def == t.def && cachedThing.Stuff == t.Stuff)
+            var a = allowed(t);
+
+            if (cachedThing?.def == t.def && cachedAllowed == a)
                 return cachedResult;
 
             cachedThing = t;
-            reloadBuildable = true;
+
+            if (!(cachedAllowed = a))
+                return cachedResult = false;
 
             if (Settings.hide_unresearched && !recipeDef.AvailableNow)
                 return cachedResult = false;
+
+            reloadBuildable = true;
 
             if (Settings.hide_empty || Settings.hide_inactive)
             {
@@ -126,13 +144,6 @@ namespace MicroDesignations
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
             }
-
-            List<SpecialThingFilterDef> l = (List<SpecialThingFilterDef>)MicroDesignations.LdisallowedFilters.GetValue(recipeDef.fixedIngredientFilter);
-
-            if (l != null)
-                for (int i = 0; i < l.Count; i++)
-                    if (l[i].Worker.Matches(t))
-                        return cachedResult = false;
 
             return cachedResult = true;
         }

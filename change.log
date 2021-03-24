@@ -1,4 +1,7 @@
-﻿1.0.21
+﻿1.0.22
+- added a bug in previous update: only one designation would be checked at all times. Fixed it. I hope that wasn't a reason, why previous update had a positive impact on lag :|;
+
+1.0.21
 - did some work reducing lag for heavy moded games. Not much, but it's something;
 
 1.0.20
