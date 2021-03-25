@@ -3,6 +3,7 @@ namespace MicroDesignations
 {
     public class ApplicableDesignationThingComp: ThingComp
     {
+        public bool? Allowed = null;
         public CompProperties_ApplicableDesignation Props
         {
             get

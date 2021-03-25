@@ -13,13 +13,12 @@ namespace MicroDesignations
         public DesignationDef designationDef = null;
         private static readonly Vector2 TerrainTextureCroppedSize = new Vector2(64f, 64f);
         private static readonly Vector2 DragPriceDrawOffset = new Vector2(19f, 17f);
-        private Thing cachedThing = null;
-        private bool cachedAllowed = false;
-        private bool cachedResult = false;
         private bool reloadBuildable = false;
         private BuildableDef cachedBuildable = null;
         private ThingDef cachedStuff = null;
         private bool cachedResearched = false;
+        private bool cachedResult = false;
+        private int cachedTick = 0;
 
         public Designator_MicroRecipe(RecipeDef recipeDef, BuildableDef thingUser)
         {
@@ -118,29 +117,30 @@ namespace MicroDesignations
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
-            if (!t.Spawned 
-                || t.def.comps.FirstOrDefault(x => x is CompProperties_ApplicableDesignation && (x as CompProperties_ApplicableDesignation).designationDef == designationDef) == null
-                || Map.designationManager.DesignationOn(t, Designation) != null)
+            ThingWithComps thing;
+            if (!t.Spawned || (thing = t as ThingWithComps) == null) return false;
+            //
+            ApplicableDesignationThingComp comp = thing.AllComps?.FirstOrDefault(x => x is ApplicableDesignationThingComp && (x as ApplicableDesignationThingComp).Props.designationDef == designationDef) as ApplicableDesignationThingComp;
+            if (comp == null || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
-            var a = allowed(t);
+            if (comp.Allowed == null) comp.Allowed = allowed(t);
+            if (comp.Allowed == false)
+                return false;
 
-            if (cachedThing?.def == t.def && cachedAllowed == a)
+            if (cachedTick == Settings.lastSelectTick)
                 return cachedResult;
 
-            cachedThing = t;
-
-            if (!(cachedAllowed = a))
-                return cachedResult = false;
+            cachedTick = Settings.lastSelectTick;
 
             if (Settings.hide_unresearched && !recipeDef.AvailableNow)
                 return cachedResult = false;
 
             reloadBuildable = true;
+            FindBuilding();
 
             if (Settings.hide_empty || Settings.hide_inactive)
             {
-                FindBuilding();
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
             }

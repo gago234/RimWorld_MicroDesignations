@@ -7,12 +7,13 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Verse;
 
-namespace MicroDesignations
+namespace MicroDesignations.Patches
 {
+    
     [HarmonyPatch(typeof(InspectGizmoGrid), "DrawInspectGizmoGridFor")]
     static class InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch
     {
-
+        
         static Command_Action initAction(Designator des)
         {
             if (des.GetType().IsSubclassOf(typeof(Action_Designator)))

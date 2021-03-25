@@ -9,6 +9,7 @@ namespace MicroDesignations
         public static bool hide_unresearched = false;
         public static bool hide_empty = false;
         public static bool hide_inactive = false;
+        public static int lastSelectTick = 0;
 
         public static void DoSettingsWindowContents(Rect inRect)
         {

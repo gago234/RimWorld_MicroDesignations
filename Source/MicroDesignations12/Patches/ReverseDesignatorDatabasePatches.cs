@@ -7,7 +7,7 @@ using RimWorld;
 using Verse;
 
 
-namespace MicroDesignations
+namespace MicroDesignations.Patches
 {
     [HarmonyPatch(typeof(ReverseDesignatorDatabase), "InitDesignators")]
     static class ReverseDesignatorDatabase_InitDesignators_MicroDesignatorsPatch

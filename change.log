@@ -1,4 +1,7 @@
-﻿1.0.22
+﻿1.0.23
+- yet another change to how gizmos are updating. Now it wouldn't update when buildings are destroyed or added unless the game is reloaded! I just can't quite nail it, aren't I? Added special events when selection of items is changed. Now gizmos update each time selected items are changed, and get FIXED after that, so there should be no persistent lag any more, maybe a tiny hick up when new object is selected;
+
+1.0.22
 - added a bug in previous update: only one designation would be checked at all times. Fixed it. I hope that wasn't a reason, why previous update had a positive impact on lag :|;
 
 1.0.21
