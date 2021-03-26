@@ -14,8 +14,7 @@ namespace MicroDesignations.Patches
     {
         static void UnmarkDesignation(Pawn_JobTracker __instance, JobCondition condition, bool releaseReservations, bool cancelBusyStancesSoft, bool canReturnToPool)
         {
-            if (__instance == null || __instance.curJob == null || __instance.curJob.bill == null || __instance.curJob.bill == null ||
-                __instance.curJob.bill.billStack != null || condition != JobCondition.Succeeded)
+            if (__instance?.curJob?.bill == null || __instance.curJob.bill.billStack != null || condition != JobCondition.Succeeded)
                 return;
 
             if (__instance.curJob.targetB != null && __instance.curJob.targetB.HasThing && !__instance.curJob.targetB.ThingDestroyed)
