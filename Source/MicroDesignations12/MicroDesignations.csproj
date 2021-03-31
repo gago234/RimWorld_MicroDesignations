@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicableDesignationThingComp.cs" />
+    <Compile Include="CrossReferences.cs" />
     <Compile Include="DesignatorHotKey.cs" />
     <Compile Include="Patches\BillPatches.cs" />
     <Compile Include="BuildableCommand_Action.cs" />

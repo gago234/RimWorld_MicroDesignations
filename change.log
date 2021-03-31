@@ -1,4 +1,7 @@
-﻿1.0.23
+﻿1.0.24
+- from now on, if you use BetterLoading, you have to mind your mod list order on your own;
+
+1.0.23
 - yet another change to how gizmos are updating. Now it wouldn't update when buildings are destroyed or added unless the game is reloaded! I just can't quite nail it, aren't I? Added special events when selection of items is changed. Now gizmos update each time selected items are changed, and get FIXED after that, so there should be no persistent lag any more, maybe a tiny hick up when new object is selected;
 
 1.0.22
