@@ -23,7 +23,6 @@ namespace MicroDesignations
             //
             static void Postfix()
             {
-                Log.Message($"patched MicroDesignations");
                 CrossReferences.Populate();
             }
         }
