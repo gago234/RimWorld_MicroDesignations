@@ -14,12 +14,13 @@ namespace MicroDesignations.Patches
     static class InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch
     {
         
-        static Command_Action initAction(Designator des)
+        static Command_Action initAction(Command_Action defaultAction, Designator des)
         {
+            //Log.Message($"{des}");
             if (des.GetType().IsSubclassOf(typeof(Action_Designator)))
                 return (des as Action_Designator).init_Command_Action();
             else
-                return new Command_Action();
+                return defaultAction;
         }
 
         [HarmonyTranspiler]
@@ -35,6 +36,7 @@ namespace MicroDesignations.Patches
 
                 if (i.opcode == OpCodes.Newobj && i.operand == (object)ctor)
                 {
+                    yield return i;//not pretty, but I have claws for hands
                     yield return new CodeInstruction(OpCodes.Ldloc_S, 6);
                     yield return new CodeInstruction(OpCodes.Ldfld, des);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch), nameof(InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch.initAction)));
