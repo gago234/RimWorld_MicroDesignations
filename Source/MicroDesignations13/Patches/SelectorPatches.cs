@@ -15,8 +15,7 @@ namespace MicroDesignations.Patches
     {
         static void Postfix()
         {
-            var now = DateTime.Now;
-            Settings.lastSelectTick = now.Hour * 360000 + now.Minute * 60000 + now.Second * 1000 + now.Millisecond;
+            Settings.ResetSelectTick();
         }
     }
 
@@ -25,8 +24,7 @@ namespace MicroDesignations.Patches
     {
         static void Postfix()
         {
-            var now = DateTime.Now;
-            Settings.lastSelectTick = now.Hour * 360000 + now.Minute * 60000 + now.Second * 1000 + now.Millisecond;
+            Settings.ResetSelectTick();
         }
     }
 
@@ -35,8 +33,7 @@ namespace MicroDesignations.Patches
     {
         static void Postfix()
         {
-            var now = DateTime.Now;
-            Settings.lastSelectTick = now.Hour * 360000 + now.Minute * 60000 + now.Second * 1000 + now.Millisecond;
+            Settings.ResetSelectTick();
         }
     }
 }

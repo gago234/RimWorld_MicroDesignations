@@ -61,8 +61,12 @@ namespace MicroDesignations
                 List<Building> list = new List<Building>();
                 foreach (var user in mdef.recipeDef.AllRecipeUsers)
                     if (t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
-                        x => (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills()
-                        && pawn.CanReserve(x, 1, -1, null, forced) && pawn.CanReach(x, PathEndMode.ClosestTouch, Danger.Deadly)).FirstOrDefault() != null)
+                            x => !x.IsForbidden(pawn)
+                            && pawn.CanReserve(x, 1, -1, null, forced)
+                            && (x as IBillGiver) != null
+                            && (x as IBillGiver).CurrentlyUsableForBills()
+                            && pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly)   
+                        ).FirstOrDefault() != null)
                         return true;
             }
 
@@ -83,18 +87,18 @@ namespace MicroDesignations
             foreach (var user in mdef.recipeDef.AllRecipeUsers)
             {
                 List<Building> buildings = t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
-                    x => (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills()
-                    && pawn.CanReserve(x, 1, -1, null, forced) && pawn.CanReach(x, PathEndMode.ClosestTouch, Danger.Deadly)).ToList();
-
+                    x => !x.IsForbidden(pawn) && pawn.CanReserve(x, 1, -1, null, forced) 
+                    && (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills()
+                    && pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly)).ToList();
                 list.AddRange(buildings);
             }
 
             if (list.NullOrEmpty())
                 return null;
+            //
+            list.SortBy(x => x.TryGetComp<CompRefuelable>() == null || x.TryGetComp<CompRefuelable>().HasFuel ? 0f : 99999f + x.Position.DistanceTo(t.Position));
 
-            list.SortBy(x => x.TryGetComp<CompRefuelable>() == null || x.TryGetComp<CompRefuelable>().HasFuel ? 0f : 99999f + pawn.Position.DistanceTo(t.Position));
-
-            Building building = null;
+            Thing building = null;
             foreach (var l in list)
             {
                 CompRefuelable compRefuelable = l.TryGetComp<CompRefuelable>();

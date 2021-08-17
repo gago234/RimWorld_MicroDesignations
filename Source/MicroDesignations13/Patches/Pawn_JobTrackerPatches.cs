@@ -6,23 +6,29 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using System;
 
 namespace MicroDesignations.Patches
 {
+
+
     [HarmonyPatch(typeof(Pawn_JobTracker), "EndCurrentJob")]
     static class Pawn_JobTracker_EndCurrentJob_MicroDesignationsPatch
     {
         static void UnmarkDesignation(Pawn_JobTracker __instance, JobCondition condition, bool releaseReservations, bool cancelBusyStancesSoft, bool canReturnToPool)
         {
-            if (__instance?.curJob?.bill == null || __instance.curJob.bill.billStack != null || condition != JobCondition.Succeeded)
+            if (__instance?.curJob?.bill == null || __instance.curJob.bill.billStack != null /*|| condition != JobCondition.Succeeded*/)
                 return;
 
             if (__instance.curJob.targetB != null && __instance.curJob.targetB.HasThing && !__instance.curJob.targetB.ThingDestroyed)
             {
                 RecipeDef rec = __instance.curJob.bill.recipe;
-                Thing thing = __instance.curJob.targetB.Thing;
+                ThingWithComps thing = __instance.curJob.targetB.Thing as ThingWithComps;
+                if (thing == null)
+                    return;
+                //
                 DesignationDef dDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == rec.defName + "Designation");
-
+                
                 if (dDef == null)
                     return;
 
@@ -32,6 +38,18 @@ namespace MicroDesignations.Patches
                     return;
 
                 thing.Map.designationManager.RemoveDesignation(d);
+                if (condition != JobCondition.Succeeded)
+                {
+                    Settings.ResetSelectTick();
+                    var comp = thing.AllComps?.FirstOrDefault(x => x is ApplicableDesignationThingComp && (x as ApplicableDesignationThingComp).Props.designationDef == dDef) as ApplicableDesignationThingComp;
+                    if(comp != null)    
+                        comp.Allowed = null;
+                    var ds = Find.ReverseDesignatorDatabase.AllDesignators.FirstOrDefault(x => (x as Designator_MicroRecipe) != null && (x as Designator_MicroRecipe).designationDef == dDef);
+                    if (!ds.CanDesignateThing(thing))
+                        return;
+                    //
+                    thing.Map.designationManager.AddDesignation(new Designation(thing, dDef));
+                }
             }
         }
 

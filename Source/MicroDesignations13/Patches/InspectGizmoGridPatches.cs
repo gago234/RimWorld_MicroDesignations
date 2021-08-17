@@ -36,7 +36,7 @@ namespace MicroDesignations.Patches
 
                 if (i.opcode == OpCodes.Newobj && i.operand == (object)ctor)
                 {
-                    yield return i;//not pretty, but I have claws for hands
+                    yield return i;//not pretty, but I have paws for hands
                     yield return new CodeInstruction(OpCodes.Ldloc_S, 6);
                     yield return new CodeInstruction(OpCodes.Ldfld, des);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch), nameof(InspectGizmoGrid_DrawInspectGizmoGridFor_MicroDesignationsPatch.initAction)));

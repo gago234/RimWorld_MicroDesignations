@@ -12,6 +12,12 @@ namespace MicroDesignations
         public static int lastSelectTick = 0;
         public static bool betterLoadingActive = false;
 
+        public static void ResetSelectTick()
+        {
+            var now = DateTime.Now;
+            lastSelectTick = now.Hour * 360000 + now.Minute * 60000 + now.Second * 1000 + now.Millisecond;
+        }
+
         public static void DoSettingsWindowContents(Rect inRect)
         {
             Listing_Standard listing_Standard = new Listing_Standard();
