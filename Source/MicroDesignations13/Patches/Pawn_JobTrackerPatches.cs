@@ -45,7 +45,7 @@ namespace MicroDesignations.Patches
                     if(comp != null)    
                         comp.Allowed = null;
                     var ds = Find.ReverseDesignatorDatabase.AllDesignators.FirstOrDefault(x => (x as Designator_MicroRecipe) != null && (x as Designator_MicroRecipe).designationDef == dDef);
-                    if (!ds.CanDesignateThing(thing))
+                    if (ds == null || !ds.CanDesignateThing(thing))
                         return;
                     //
                     thing.Map.designationManager.AddDesignation(new Designation(thing, dDef));
