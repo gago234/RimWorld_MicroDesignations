@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- settings -->
+  <hide_unresearched>未研究なレシピの指示を非表示</hide_unresearched>
+  <hide_empty>マップ上に指示を出せる建築物がない場合は指示を非表示</hide_empty>
+  <hide_inactive>指示を出す建築物が未研究の場合は指示を非表示 (マップ上にあるときは除く)</hide_inactive>
+
+</LanguageData>
