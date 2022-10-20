@@ -1,4 +1,10 @@
-﻿1.0.27
+﻿1.0.28
+- 1.4. Will it break?
+
+1.0.27+
+- japanese translation by Djur13;
+
+1.0.27
 - fixed a bug due to which pawns wouldn't pick the closest station to work on a designated item;
 - addressed an issue due to which pawns would get stuck trying to work on a designation that's not valid anymore;
 
