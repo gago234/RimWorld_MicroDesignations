@@ -139,26 +139,37 @@ namespace MicroDesignations
 
             if (l != null)
                 for (int i = 0; i < l.Count; i++)
-                    if (l[i].Worker.Matches(thing))
+                    if (thing.def.IsWithinCategory(l[i].parentCategory) && l[i].Worker.Matches(thing))
+                    {
+                        //Log.Message($"disallowedFilters matches {thing}, {recipeDef.defName}, {l[i].defName}, {l[i].workerClass}");
                         return false;
+                    }
             return true;
         }
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
+            //Log.Message($"can designate thing 0 => {t}");
             ThingWithComps thing;
             if (!t.Spawned || (thing = t as ThingWithComps) == null) return false;
             //
+            //Log.Message($"can designate thing 1 => {t}");
             ApplicableDesignationThingComp comp = thing.AllComps?.FirstOrDefault(x => x is ApplicableDesignationThingComp && (x as ApplicableDesignationThingComp).Props.designationDef == designationDef) as ApplicableDesignationThingComp;
+            //Log.Message($"{t}, comp = {comp}, {Map.designationManager.DesignationOn(t, Designation)}");
             if (comp == null || Map.designationManager.DesignationOn(t, Designation) != null)
                 return false;
 
             if (comp.Allowed == null) comp.Allowed = allowed(t);
+            //Log.Message($"{t} allowed = {comp.Allowed}");
             if (comp.Allowed == false)
                 return false;
 
+            //Log.Message($"can designate thing 3 => {t}");
             if (cachedTick == Settings.lastSelectTick)
+            {
+                //Log.Message($"interrupted by cached result => {cachedResult}");
                 return cachedResult;
+            }
 
             cachedTick = Settings.lastSelectTick;
 
@@ -168,6 +179,7 @@ namespace MicroDesignations
             reloadBuildable = true;
             FindBuilding();
 
+            //Log.Message($"reloadBuildable = {reloadBuildable}, hide_empty = {Settings.hide_empty}, hide_inactive = {Settings.hide_inactive}, cachedBuildable = {cachedBuildable}");
             if (Settings.hide_empty || Settings.hide_inactive)
             {
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
