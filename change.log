@@ -1,4 +1,7 @@
-﻿1.0.29
+﻿1.0.30
+- tightened up a xml patch for MendAndRecycle to not interfere with other mods that unfortunately use exactly the same object names;
+
+1.0.29
 - fixed a problem due to which corpses of animals belonged to enemy or your faction wouldn't show butcher and cremate designations;
 
 1.0.28
