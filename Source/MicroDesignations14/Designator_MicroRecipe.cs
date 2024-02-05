@@ -3,7 +3,7 @@ using System.Linq;
 using Verse;
 using RimWorld;
 using UnityEngine;
-
+using MicroDesignations.ModCompatability;
 
 namespace MicroDesignations
 {
@@ -152,7 +152,10 @@ namespace MicroDesignations
             //Log.Message($"can designate thing 0 => {t}");
             ThingWithComps thing;
             if (!t.Spawned || (thing = t as ThingWithComps) == null) return false;
-            //
+            
+            if (AncientsUtility.HasAncientsExtension(recipeDef) && t.HitPoints >= t.MaxHitPoints)
+                return false;
+          
             //Log.Message($"can designate thing 1 => {t}");
             ApplicableDesignationThingComp comp = thing.AllComps?.FirstOrDefault(x => x is ApplicableDesignationThingComp && (x as ApplicableDesignationThingComp).Props.designationDef == designationDef) as ApplicableDesignationThingComp;
             //Log.Message($"{t}, comp = {comp}, {Map.designationManager.DesignationOn(t, Designation)}");
@@ -185,6 +188,7 @@ namespace MicroDesignations
                 if (Settings.hide_empty && cachedBuildable == null || Settings.hide_inactive && !cachedResearched)
                     return cachedResult = false;
             }
+
 
             return cachedResult = true;
         }

@@ -7,11 +7,11 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 using System;
+using System.Text;
+using Unity.Jobs;
 
 namespace MicroDesignations.Patches
 {
-
-
     [HarmonyPatch(typeof(Pawn_JobTracker), "EndCurrentJob")]
     static class Pawn_JobTracker_EndCurrentJob_MicroDesignationsPatch
     {
@@ -19,15 +19,15 @@ namespace MicroDesignations.Patches
         static void UnmarkDesignation(Pawn_JobTracker __instance, JobCondition condition, bool releaseReservations, bool cancelBusyStancesSoft, bool canReturnToPool, bool? carryThingAfterJobOverride = null)
         {
             if (__instance?.curJob?.bill == null || __instance.curJob.bill.billStack != null /*|| condition != JobCondition.Succeeded*/)
-                return;
+                return;            
 
             if (__instance.curJob.targetB != null && __instance.curJob.targetB.HasThing && !__instance.curJob.targetB.ThingDestroyed)
-            {
+            {                
                 RecipeDef rec = __instance.curJob.bill.recipe;
                 ThingWithComps thing = __instance.curJob.targetB.Thing as ThingWithComps;
                 if (thing == null)
                     return;
-                //
+               
                 DesignationDef dDef = DefDatabase<DesignationDef>.AllDefsListForReading.FirstOrDefault(x => x.defName == rec.defName + "Designation");
                 
                 if (dDef == null)
@@ -59,7 +59,7 @@ namespace MicroDesignations.Patches
         {
             bool b = false;
             MethodInfo m = AccessTools.Method(typeof(Pawn_JobTracker), "CleanupCurrentJob");
-            foreach (var i in (instrs))
+            foreach (var i in instrs)
             {
                 if (i.opcode == OpCodes.Call && i.operand == (object)m)
                 {
