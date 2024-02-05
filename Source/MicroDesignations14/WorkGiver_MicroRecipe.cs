@@ -162,16 +162,20 @@ namespace MicroDesignations
         private Job TryFindAncientsIngredients(Bill bill, Pawn pawn, Thing t, Thing giver)
         {
             List<ThingCount> chosen = new List<ThingCount>();         
-            bool floatMenu = FloatMenuMakerMap.makingFor == pawn;           
-            if (!WorkGiver_DoBill.TryFindBestBillIngredients(bill, pawn, giver, chosen, null))
+            List<IngredientCount> missingIng = null;
+            bool floatMenu = FloatMenuMakerMap.makingFor == pawn;
+            if (floatMenu)           
+                missingIng = new List<IngredientCount>();             
+            if (!WorkGiver_DoBill.TryFindBestBillIngredients(bill, pawn, giver, chosen, missingIng))
             {
                 if (FloatMenuMakerMap.makingFor != pawn)
                 {
                     bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame + new IntRange(500, 600).RandomInRange;
                 }
                 else if (floatMenu)
-                {                    
-                    JobFailReason.Is("MissingMaterials".Translate(), bill.Label);
+                {
+                    string text = missingIng.Select((IngredientCount missing) => missing.Summary).ToCommaList();
+                    JobFailReason.Is("MissingMaterials".Translate(text), bill.Label);
                 }
                 return null;
             }
