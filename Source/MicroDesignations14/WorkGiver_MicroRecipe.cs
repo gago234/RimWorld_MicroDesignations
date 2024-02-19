@@ -42,13 +42,23 @@ namespace MicroDesignations
             }
         }
 
+        public override bool ShouldSkip(Pawn pawn, bool forced = false)
+        {
+            MicroWorkGiverDef mdef = def as MicroWorkGiverDef;
+            if (mdef == null)
+                return true;
+                   
+            return !pawn.Map.designationManager.AnySpawnedDesignationOfDef(mdef.designationDef);            
+        }
+
         public override Danger MaxPathDanger(Pawn pawn)
         {
             return Danger.Deadly;
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-        {          
+        {
+           
             MicroWorkGiverDef mdef = def as MicroWorkGiverDef;
             if (mdef == null)
                 return false;
@@ -58,21 +68,36 @@ namespace MicroDesignations
                 return false;
             }
 
-            if (pawn.CanReserve(t, 1, -1, null, forced))
-            {
-                Thing building = null;
-                foreach (var user in mdef.recipeDef.AllRecipeUsers)
-                {
-                    building = t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
-                    x => !x.IsForbidden(pawn) &&
-                    pawn.CanReserve(x, 1, -1, null, forced) &&
-                    (x as IBillGiver) != null &&
-                    (x as IBillGiver).CurrentlyUsableForBills() &&
-                    pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly)).FirstOrDefault();
-                    if (building != null)
-                        break;                   
-                }
+            if (t.def.hasInteractionCell && !pawn.CanReserveSittableOrSpot(t.InteractionCell, forced))
+                return false;
 
+            if (!pawn.CanReserve(t, 1, -1, null, forced))
+            {
+                return false;
+            }
+
+            Thing building = null;
+            foreach (var user in mdef.recipeDef.AllRecipeUsers)
+            {
+                foreach (var x in t.Map.listerBuildings.AllBuildingsColonistOfDef(user))
+                {
+                    if (!pawn.CanReserve(x, 1, -1, null, forced) || (x.def.hasInteractionCell && !pawn.CanReserveSittableOrSpot(x.InteractionCell, forced)))
+                        continue;           
+                  
+                    if (!x.IsForbidden(pawn) && !t.IsBurning() && !t.IsBrokenDown() && x as IBillGiver != null && 
+                        (x as IBillGiver).CurrentlyUsableForBills() &&
+                        pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly))
+                    {
+                        building = x;
+                        break;
+                    }
+                }
+                if (building != null)
+                    break;                                  
+            }
+
+            if (building != null)
+            {
                 if (AncientsUtility.HasAncientsExtension(mdef.recipeDef))
                 {
                     if(!AncientsUtility.IsUsable(t, mdef.recipeDef))
@@ -80,11 +105,8 @@ namespace MicroDesignations
                     if (TryFindAncientsIngredients(mdef.recipeDef.MakeNewBill(), pawn,t, building) == null)
                         return false;
                 }
-
-                if (building != null)
-                 return true;
-            }
-
+                return true;
+            }                 
             return false;
         }
 
@@ -95,38 +117,43 @@ namespace MicroDesignations
                 return null;
 
             LocalTargetInfo target = t;
-            if (!pawn.CanReserve(target, 1, -1, null, forced) || t.IsBurning() || t.IsForbidden(pawn))
+            if (!pawn.CanReserve(target, 1, -1, null, forced) || t.IsBurning() || t.IsForbidden(pawn) || t.IsBrokenDown())
                 return null;
 
-            List<Building> list = new List<Building>();
+            HashSet<Building> buildings = new HashSet<Building>();
             foreach (var user in mdef.recipeDef.AllRecipeUsers)
-            {
-                List<Building> buildings = t.Map.listerBuildings.AllBuildingsColonistOfDef(user).Where(
-                    x => !x.IsForbidden(pawn) && 
-                    pawn.CanReserve(x, 1, -1, null, forced) &&
-                    (x as IBillGiver) != null && 
-                    (x as IBillGiver).CurrentlyUsableForBills() &&
-                    pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly)).ToList();
-                list.AddRange(buildings);
+            {               
+                foreach(var x in t.Map.listerBuildings.AllBuildingsColonistOfDef(user))
+                {
+                    if (!pawn.CanReserve(x, 1, -1, null, forced) || (x.def.hasInteractionCell && !pawn.CanReserveSittableOrSpot(x.InteractionCell, forced)))
+                        continue;
+
+                    if(!x.IsForbidden(pawn) && 
+                        (x as IBillGiver) != null && (x as IBillGiver).CurrentlyUsableForBills() 
+                        && x.def.hasInteractionCell && pawn.CanReach(x, PathEndMode.InteractionCell, Danger.Deadly))
+                    {                        
+                        buildings.Add(x);
+                    }
+                }
             }
 
-            if (list.NullOrEmpty())
+            if (buildings.EnumerableNullOrEmpty())
                 return null;
 
-            list.SortBy(x => x.TryGetComp<CompRefuelable>() == null || x.TryGetComp<CompRefuelable>().HasFuel ? 0f : 99999f + x.Position.DistanceTo(t.Position));
+            buildings.OrderBy(x => x.TryGetComp<CompRefuelable>() == null || x.TryGetComp<CompRefuelable>().HasFuel ? 0f : 99999f + x.Position.DistanceTo(t.Position));
 
             Thing building = null;
-            foreach (var l in list)
+            foreach (var b in buildings)
             {
-                CompRefuelable compRefuelable = l.TryGetComp<CompRefuelable>();
+                CompRefuelable compRefuelable = b.TryGetComp<CompRefuelable>();
                 if (compRefuelable != null && !compRefuelable.HasFuel)
                 {
-                    if (RefuelWorkGiverUtility.CanRefuel(pawn, l, forced))
-                        return RefuelWorkGiverUtility.RefuelJob(pawn, l, forced, null, null);
+                    if (RefuelWorkGiverUtility.CanRefuel(pawn, b, forced))
+                        return RefuelWorkGiverUtility.RefuelJob(pawn, b, forced, null, null);
                 }
                 else
                 {
-                    building = l;
+                    building = b;
                     break;
                 }
             }
@@ -137,7 +164,7 @@ namespace MicroDesignations
                 return job;
             }
 
-            job = new Job(mdef.jobDef, building);
+            job = JobMaker.MakeJob(mdef.jobDef, building);
             job.targetQueueB = new List<LocalTargetInfo>(1);
             job.countQueue = new List<int>(1);
             job.targetQueueB.Add(t);
@@ -180,8 +207,10 @@ namespace MicroDesignations
                 return null;
             }
             if(chosen.Count() > 0)
+            {
                 chosen.RemoveAll(x => x.Thing.def == t.def);
-            chosen.Add(new ThingCount(t, 1));
+                chosen.Add(new ThingCount(t, 1));               
+            }
             Job job = WorkGiver_DoBill.TryStartNewDoBillJob(pawn, bill, giver as IBillGiver, chosen, out _);
             return job;
         }
