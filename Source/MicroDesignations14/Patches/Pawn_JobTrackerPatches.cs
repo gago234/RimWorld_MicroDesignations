@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -33,7 +33,7 @@ namespace MicroDesignations.Patches
                 if (dDef == null)
                     return;
 
-                Designation d = thing.Map.designationManager.DesignationOn(__instance.curJob.targetB.Thing, dDef);
+                Designation d = thing.Map?.designationManager.DesignationOn(__instance.curJob.targetB.Thing, dDef);
 
                 if (d == null)
                     return;
